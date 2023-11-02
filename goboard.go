@@ -11,6 +11,24 @@ func printBoard(board [][]string) {
 	}
 }
 
+func checkWin(board [][]string, player string) bool {
+	// Check rows and columns
+	for i := 0; i < 3; i++ {
+		if (board[i][0] == player && board[i][1] == player && board[i][2] == player) ||
+			(board[0][i] == player && board[1][i] == player && board[2][i] == player) {
+			return true
+		}
+	}
+
+	// Check diagonals
+	if (board[0][0] == player && board[1][1] == player && board[2][2] == player) ||
+		(board[0][2] == player && board[1][1] == player && board[2][0] == player) {
+		return true
+	}
+
+	return false
+}
+
 func main() {
 	// Create a tic-tac-toe board.
 	board := [][]string{
@@ -47,8 +65,11 @@ func main() {
 		// Print the updated board.
 		printBoard(board)
 
-		// Check for a win condition (not implemented here).
-		// You can add your win-checking logic here.
+		// Check for a win.
+		if checkWin(board, currentPlayer) {
+			fmt.Printf("Player %s wins!\n", currentPlayer)
+			break
+		}
 
 		// Switch to the other player.
 		if currentPlayer == "X" {
@@ -60,5 +81,7 @@ func main() {
 		moves++
 	}
 
-	fmt.Println("It's a draw! The game is over.")
+	if moves == 9 {
+		fmt.Println("It's a draw! The game is over.")
+	}
 }
